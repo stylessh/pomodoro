@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route } from "wouter";
+import { ThemeProvider } from "styled-components";
 
-function App() {
+// components
+import Navbar from "./components/Navbar";
+import Timer from "./components/Timer";
+
+// context
+import { TimerProvider } from "./context/timerContext";
+
+// styles
+import GlobalStyles from "./global/styles";
+import theme from "./global/theme";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <TimerProvider>
+        <GlobalStyles />
+        <Navbar />
+
+        <Route path="/">
+          <Timer />
+        </Route>
+
+        <Route path="/short">short time</Route>
+        <Route path="/long">long time</Route>
+      </TimerProvider>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
