@@ -1,8 +1,17 @@
-import { useEffect, useState, useRef } from "react";
-import { Container, TimerContainer, TimerBar, TimerInfo } from "./styles";
+import { useState, useRef } from "react";
 import Countdown, { CountdownRendererFn, zeroPad } from "react-countdown";
+import { HiOutlinePause, HiOutlinePlay } from "react-icons/hi";
+import { RiRestartLine } from "react-icons/ri";
 
 import useTimer from "../../hooks/useTimer";
+
+import {
+  Container,
+  TimerContainer,
+  TimerBar,
+  TimerInfo,
+  TimerReset,
+} from "./styles";
 
 const renderer: CountdownRendererFn = ({ minutes, seconds, completed }) => {
   if (completed) {
@@ -19,19 +28,12 @@ const renderer: CountdownRendererFn = ({ minutes, seconds, completed }) => {
 };
 
 const Timer = () => {
-  const { time, setTimer } = useTimer();
+  const { time, setTimer, restartTimer } = useTimer();
 
-  // const [final, setFinal] = useState(0);
   const [paused, setPaused] = useState<boolean>(false);
   const [percent, setPercent] = useState<number>(0);
 
   const countdown = useRef<Countdown | null>(null);
-
-  useEffect(() => {
-    // setFinal(time);
-
-    console.log(countdown.current?.offsetTime);
-  }, []);
 
   const handlePause = () => {
     if (countdown.current?.isPaused()) {
@@ -44,14 +46,24 @@ const Timer = () => {
   };
 
   const handleTick = (e: any) => {
-    console.log(e);
     setPercent(Math.floor(0.5 * e.minutes * 10));
     setTimer(e.total);
   };
 
+  const handleRestart = () => {
+    restartTimer();
+
+    countdown.current?.start();
+    setPaused(false);
+  };
+
   return (
     <Container>
-      {paused && <button>restart</button>}
+      {paused && (
+        <TimerReset onClick={handleRestart}>
+          <RiRestartLine className="icon" />
+        </TimerReset>
+      )}
 
       <TimerContainer>
         <TimerBar />
@@ -59,13 +71,17 @@ const Timer = () => {
         <TimerInfo>
           <Countdown
             ref={countdown}
-            date={time}
+            date={Date.now() + time}
             onTick={handleTick}
             renderer={renderer}
           />
 
           <button className="stop-play" onClick={handlePause}>
-            {paused ? "continue" : "pause"}
+            {paused ? (
+              <HiOutlinePlay className="icon" />
+            ) : (
+              <HiOutlinePause className="icon" />
+            )}
           </button>
         </TimerInfo>
       </TimerContainer>
