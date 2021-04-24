@@ -22,9 +22,7 @@ const TimerContainer = styled.div`
   background: none;
   border: 1em inset solid ${({ theme }) => `${theme.accent}50`};
 
-
-
-  box-shadow: 10px 20px 60px rgba(0,0,0, .3);
+  box-shadow: 10px 20px 60px rgba(0, 0, 0, 0.3);
 `;
 
 const TimerBar = styled.div`
@@ -57,13 +55,39 @@ const TimerInfo = styled.div`
     background: none;
     border: none;
 
-    font-size: 1em;
-
     margin-top: 1em;
 
     color: ${({ theme }) => theme.white};
-    font-weight: 700;
+
+    cursor: pointer;
+
+    .icon {
+      font-size: 2em;
+    }
   }
 `;
 
-export { Container, TimerContainer, TimerBar, TimerInfo };
+const TimerReset = styled.button`
+  position: fixed;
+
+  bottom: 1em;
+  left: 1em;
+
+  padding: 1em;
+
+  border-radius: 50%;
+
+  background: ${({ theme }) => theme.accent};
+  border: none;
+
+  color: ${({ theme }) => theme.white};
+
+  cursor: pointer;
+
+  .icon {
+    vertical-align: top;
+    font-size: 1.5em;
+  }
+`;
+
+export { Container, TimerContainer, TimerBar, TimerInfo, TimerReset };
